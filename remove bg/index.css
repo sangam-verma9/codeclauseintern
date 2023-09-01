@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css2?family=Black+And+White+Picture&family=Pacifico&display=swap");
+* {
+  padding: 0;
+  margin: 0;
+}
+body {
+  background: url("bg2.png");
+}
+/* .mainbody {
+  background: url("bg2.png");
+} */
+.header {
+  line-height: 100px;
+  margin-top: 10px;
+  font-family: "Black And White Picture", cursive;
+  font-family: "Pacifico", cursive;
+}
+.pointer {
+  font-size: 1.5rem;
+}
+.uploadarea {
+  border-radius: 10px;
+  border: 3px solid #a3a3a1;
+  /* background-color: skyblue; */
+}
+.realimg,
+.generateimg {
+  height: 250px;
+  width: auto;
+  border-radius: 10px;
+  border: 3px solid #a3a3a1;
+}
+
+@media screen and (max-width: 800px) {
+  .realimg,
+  .generateimg {
+    height: 150px;
+    width: auto;
+  }
+}
+.downbutn {
+  width: 200px;
+}

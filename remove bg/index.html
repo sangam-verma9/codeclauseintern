@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="bootstrap.min.css" />
+    <title>Background Remover</title>
+  </head>
+  <body>
+    <!-- header -->
+    <div class="header text-center">
+      <h1>Background Remover</h1>
+    </div>
+    <!-- body -->
+    <div class="mainbody">
+      <div>
+        <form
+          class="uploadarea d-flex justify-content-sm-between flex-column flex-lg-row m-lg-5 m-sm-2 p-lg-4 p-sm-2"
+        >
+          <div class="selcetfile m-2">
+            <label for="choosefile" class="pointer"><h3>⬆️</h3></label>
+            <input type="file" name="" id="choosefile" />
+          </div>
+          <div class="uploadfile m-2 text-center">
+            <input
+              type="button"
+              class="btn btn-outline-dark"
+              onclick="submitHandler()"
+              value="UPLOAD"
+            />
+          </div>
+        </form>
+      </div>
+      <div
+        class="images d-flex flex-column flex-lg-row m-lg-5 m-sm-2 p-lg-4 p-sm-2 justify-content-center"
+      >
+        <div class="m-3 text-center">
+          <img
+            class="borderimg realimg"
+            src="no-image.svg"
+            id="realimg"
+            alt="...."
+          />
+        </div>
+        <div class="borderimg m-3 text-center">
+          <img class="generateimg" src="no-image.svg" id="geneimg" alt="...." />
+        </div>
+      </div>
+      <div class="downloadimg text-center">
+        <button
+          class="btn btn-outline-dark downbutn"
+          id="Button"
+          onclick="downloadFile()"
+        >
+          DOWNLOAD
+        </button>
+      </div>
+    </div>
+    <script>
+      document.getElementById("Button").disabled = true;
+
+      let imageURL;
+      let realimg;
+      function submitHandler() {
+        const fileInput = document.getElementById("choosefile");
+        const realimgprev = document.getElementById("realimg");
+        //preview
+        const imageSrc = URL.createObjectURL(fileInput.files[0]);
+        realimgprev.src = imageSrc;
+
+        const image = fileInput.files[0];
+
+        const formData = new FormData();
+        formData.append("image_file", image);
+        formData.append("size", "auto");
+
+        const apiKey = "ixBs3KMo5LGBgk3APUQhMfDG";
+
+        fetch("https://api.remove.bg/v1.0/removebg", {
+          method: "POST",
+          headers: {
+            "X-Api-Key": apiKey,
+          },
+          body: formData,
+        })
+          .then(function (reponse) {
+            return reponse.blob();
+          })
+          .then(function (blob) {
+            // console.log(blob);
+            const url = URL.createObjectURL(blob);
+            imageURL = url;
+            changeImage();
+          })
+          .catch();
+      }
+
+      //preview removerd img
+      function changeImage() {
+        var img = document.getElementById("geneimg");
+        img.src = imageURL;
+        document.getElementById("Button").disabled = false;
+        return false;
+      }
+
+      function downloadFile() {
+        var anchorElement = document.createElement("a"); //<a></a>
+        anchorElement.href = imageURL;
+        anchorElement.download = "backgrond_removed.png";
+        document.body.appendChild(anchorElement);
+
+        anchorElement.click();
+
+        document.body.removeChild(anchorElement);
+      }
+    </script>
+  </body>
+</html>
